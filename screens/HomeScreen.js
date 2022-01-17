@@ -1,9 +1,11 @@
 import { AntDesign, Entypo, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { useLayoutEffect, useRef } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {StyleSheet, Image, Button, SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import tailwind from "tailwind-rn";
+import { db } from "../firebase";
 import useAuth from "../hooks/useAuth";
 
 const DUMMY_DATA = [
@@ -62,7 +64,41 @@ const HomeScreen = () => {
 
     const navigation = useNavigation();
     const { user, logout } = useAuth();
+    const [profiles, setProfiles] = useState([]);
     const swipeRef = useRef(null);
+
+    useLayoutEffect(() => 
+        onSnapshot(
+            doc(db, "users", user.uid), 
+            (snapshot) => {
+                if(!snapshot.exists()) {
+                    navigation.navigate("Modal")
+                }
+            }
+    ),[])
+
+    useEffect(() => {
+        let unsub;
+
+        const fetchCards = async () => {
+            unsub = onSnapshot(collection(db, "users"), (snapshot) => {
+                setProfiles(
+                    snapshot.docs
+                    .filter(doc => doc.id !== user.uid)
+                    .map((doc) => ({
+                        id: doc.id,
+                        ...doc.data(),
+                    }))
+                )
+            })
+        }
+
+        fetchCards();
+        return unsub;
+
+    }, []);
+
+    console.log(profiles)
 
     return(
         <SafeAreaView style={tailwind("flex-1")}>
@@ -87,7 +123,7 @@ const HomeScreen = () => {
                 <Swiper
                     ref={swipeRef}
                     containerStyle={{backgroundColor: "transparent"}}
-                    cards={DUMMY_DATA}
+                    cards={profiles}
                     stackSize={5}
                     cardIndex={0}
                     animateCardOpacity
@@ -117,7 +153,7 @@ const HomeScreen = () => {
                             },
                         }
                     }}
-                    renderCard={(card) => (
+                    renderCard={(card) => card ? ( 
                             <View key={card.id} style={tailwind("relative bg-white h-3/4 rounded-xl")}>
                                 <Image 
                                     style={tailwind("absolute top-0 h-full w-full rounded-xl")}
@@ -131,7 +167,7 @@ const HomeScreen = () => {
                                     ]} 
                                 >
                                     <View> 
-                                        <Text style={tailwind("text-xl font-bold")}>{card.firstName} {card.lastName}</Text>
+                                        <Text style={tailwind("text-xl font-bold")}>{card.displayName}</Text>
                                         <Text >{card.occupation}</Text>
                                     </View>
                                     <Text style={tailwind("text-xl font-bold")}>{card.age}</Text>
@@ -139,8 +175,25 @@ const HomeScreen = () => {
                                 
 
                             </View>
-                        )
-                    }
+                        ) : (
+
+                            <View
+                                style={[
+                                    tailwind("relative bg-white h-3/4 rounded-xl justify-center items-center"),
+                                    styles.cardShadow
+                                ]}
+                            >
+                                <Text style={tailwind("font-bold pb-5")} >No more profiles</Text>
+
+                                <Image 
+                                    style={tailwind("h-20 w-full")}
+                                    height={100}
+                                    width={100}
+                                    source={{ uri: "https://links.papareact.com/6gb"}}
+                                />
+                            </View>
+
+                        )}
                 />
             </View>
 
