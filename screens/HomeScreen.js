@@ -72,7 +72,7 @@ const HomeScreen = () => {
                     <Image style={tailwind("h-10 w-10 rounded-full")} source={{ uri:user.photoURL}} />
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Modal")}>
                     <Image style={tailwind("h-14 w-14")} source={require("../assets/favicon.png")} />
                 </TouchableOpacity>
 
