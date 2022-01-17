@@ -1,17 +1,15 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Button, Text, View } from "react-native";
 import useAuth from "../hooks/useAuth";
 
 const LoginScreen = () => {
 
-    const { user } = useAuth(); //useAuthで定義されたuser: "Hide"にアクセス
-    console.log(user)
+    const { signInWithGogle } = useAuth();
 
     return(
         <View>
-            <Text>
-                Login Screen
-            </Text>
+            <Text>Login Screen</Text>
+            <Button title="login" onPress={ signInWithGogle } />
         </View>
     )
 }

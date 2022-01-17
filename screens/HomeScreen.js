@@ -6,9 +6,7 @@ import useAuth from "../hooks/useAuth";
 const HomeScreen = () => {
 
     const navigation = useNavigation();
-
-    const { user } = useAuth(); //useAuthで定義されたuser: "Hide"にアクセス
-    console.log(user)
+    const { logout } = useAuth();
 
     return(
         <View>
@@ -16,6 +14,10 @@ const HomeScreen = () => {
             <Button 
                 title="Gp to Chat Screen" 
                 onPress={() => navigation.navigate("Chat")}
+            />
+            <Button  
+                title="Logout" 
+                onPress={ logout } 
             />
         </View>
     )
