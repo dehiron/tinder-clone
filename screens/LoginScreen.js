@@ -4,8 +4,7 @@ import useAuth from "../hooks/useAuth";
 
 const LoginScreen = () => {
 
-    const { user } = useAuth();
-
+    const { user } = useAuth(); //useAuthで定義されたuser: "Hide"にアクセス
     console.log(user)
 
     return(
