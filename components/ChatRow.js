@@ -6,16 +6,18 @@ import tailwind from "tailwind-rn";
 import useAuth from "../hooks/useAuth";
 import getMatchedUserInfo from "../lib/getMatchedUserInfo";
 
-const ChatRow = (props) => {
+const ChatRow = ({ matchDetails }) => {
 
     const navigation = useNavigation();
     const { user } = useAuth();
     const [matchedUserInfo, setMatchedUserInfo] = useState(null);
 
     useEffect(() => {
-        setMatchedUserInfo(getMatchedUserInfo(props.matchedDetails.users, user.uid));
+        setMatchedUserInfo(getMatchedUserInfo(matchDetails.users, user.uid));
 
-    }, [props.matchedDetails, user])
+    }, [matchDetails, user])
+
+    console.log(matchDetails)
 
     return(
         <TouchableOpacity
@@ -23,6 +25,7 @@ const ChatRow = (props) => {
                 tailwind("flex-row items-center py-3 px-5 bg-white mx-3 rounded-lg"),
                 styles.cardShadow,
             ]}
+            onPress = {() => { navigation.navigate("Message"),  matchDetails }}
         >
             <Image
                 style={tailwind("rounded-full h-16 w-16 mr-4")}

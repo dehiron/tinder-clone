@@ -34,7 +34,7 @@ const ChatList = () => {
             style={tailwind("h-full")}
             data={matches}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => <ChatRow matchedDetails={item} />}
+            renderItem={({ item }) => <ChatRow matchDetails={item} />}
         />
 
     ) : (
