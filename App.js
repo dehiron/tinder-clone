@@ -1,20 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import StackNavigator from './StackNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import { AuthProvider } from './hooks/useAuth';
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs();
+// import { Button, Text, View } from 'react-native';
+// import tailwind from 'tailwind-rn';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer >
+      <AuthProvider >
+        <StackNavigator />
+      </AuthProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

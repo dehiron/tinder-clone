@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tinde-clone",
-    "slug": "tinde-clone",
+    "name": "tinder-clone",
+    "slug": "tinder-clone",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "host.exp.exponent"
     },
     "web": {
       "favicon": "./assets/favicon.png"
